@@ -8,7 +8,7 @@ class SpotifyClient(object):
     def __init__(self, api_key):
         self.api_key = api_key
 
-    def get_random_tracks(self):
+    def get_random_tracks(self,TOKEN):
         wildcard = f'%{random.choice(string.ascii_lowercase)}%'
         query = urllib.parse.quote(wildcard)
         offset = random.randint(0, 2000)
@@ -19,7 +19,7 @@ class SpotifyClient(object):
             url,
             headers={
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {self.api_key}"
+                "Authorization": f"Bearer {TOKEN}"
             }
         )
         response_json = response.json()
@@ -44,3 +44,37 @@ class SpotifyClient(object):
             }
         )
         return response.ok
+
+    def add_tracks_to_playlist(self, track_ids, playlist_id, ADD_TO_PLAYLIST_TOKEN):
+        url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
+
+        response = requests.post(
+            url,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {ADD_TO_PLAYLIST_TOKEN}"
+            },
+            json={
+                'uris': track_ids
+            }
+        )
+        return response.ok
+
+    def create_a_playlist(self, user_id, TOKEN, PlaylistName):
+        url = f'https://api.spotify.com/v1/users/{user_id}/playlists'
+
+        response = requests.post(
+            url,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {TOKEN}"
+            },
+            json={
+                "name": PlaylistName,
+                "description": "Made with a spotify API",
+                "public": False
+            }
+        )
+        response_json = response.json()
+
+        return response_json["id"]
