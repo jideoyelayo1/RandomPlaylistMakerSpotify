@@ -8,7 +8,7 @@ class SpotifyClient(object):
     def __init__(self, api_key):
         self.api_key = api_key
 
-    def get_random_tracks(self,TOKEN):
+    def get_random_tracks(self, TOKEN):
         wildcard = f'%{random.choice(string.ascii_lowercase)}%'
         query = urllib.parse.quote(wildcard)
         offset = random.randint(0, 2000)
@@ -23,7 +23,7 @@ class SpotifyClient(object):
             }
         )
         response_json = response.json()
-        #print(response_json)
+        print(response_json)
 
         tracks = [track for track in response_json['tracks']['items']]
         print(f"found {len(tracks)} from your search")
@@ -76,5 +76,7 @@ class SpotifyClient(object):
             }
         )
         response_json = response.json()
+        #print(response_json)
+        #print("the ", response_json['id'], " playlist has been made")
 
-        return response_json["id"]
+        return response_json['id']
