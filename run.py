@@ -1,8 +1,9 @@
 import os
 from spotify_client import SpotifyClient
+from datetime import datetime
 
 Create_Playlist_TOKEN = open('TOKEN.txt', 'r').read()
-PlaylistName = "RandomPlaylist"
+PlaylistName = "RandomPlaylist for " + str(datetime.now())[:11]
 ADD_TO_PLAYLIST_TOKEN = Create_Playlist_TOKEN
 TOKEN = Create_Playlist_TOKEN
 
@@ -21,14 +22,14 @@ def run():
     random_track = spotify_client.get_random_tracks(TOKEN=TOKEN)
     track_ids = [track['id'] for track in random_track]
     x = ['spotify:track:' + y for y in track_ids]
-    print(x)
+    #print(x)
 
     # add rnd of rnd to lib
     was_added_to_library = spotify_client.add_tracks_to_playlist(track_ids=x, playlist_id=playlist_id
                                                                  , ADD_TO_PLAYLIST_TOKEN=ADD_TO_PLAYLIST_TOKEN)
     if was_added_to_library:
         for track in random_track:
-            print(f"Added{track['name']} to your library")
+            print(f"Added {track['name']} to {PlaylistName}")
 
 
 if __name__ == '__main__':
